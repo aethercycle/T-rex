@@ -3,6 +3,17 @@ import { Twitter, Send } from 'lucide-react';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
+  const [inputValue, setInputValue] = useState('');
+  const [manifestoRevealed, setManifestoRevealed] = useState(false);
+  const [glitchActive, setGlitchActive] = useState(false);
+  const [glitchTexts, setGlitchTexts] = useState<Array<{
+    id: number;
+    x: number;
+    y: number;
+    size: number;
+    rotation: number;
+    opacity: number;
+  }>>([]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -10,8 +21,59 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && inputValue.toLowerCase() === 'run') {
+      setManifestoRevealed(true);
+    }
+  };
+
+  const triggerGlitchFlood = () => {
+    if (glitchActive) return;
+    
+    setGlitchActive(true);
+    
+    // Generate random positions and properties for glitch texts
+    const texts = Array.from({ length: 25 }, (_, i) => ({
+      id: i,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 40 + 20, // 20-60px
+      rotation: (Math.random() - 0.5) * 20, // -10 to 10 degrees
+      opacity: Math.random() * 0.7 + 0.3, // 30-100%
+    }));
+    
+    setGlitchTexts(texts);
+    
+    // Clear the effect after 2.5 seconds
+    setTimeout(() => {
+      setGlitchActive(false);
+      setGlitchTexts([]);
+    }, 2500);
+  };
+
   return (
-    <div className="min-h-screen bg-[#111111] text-white font-mono">
+    <div className="min-h-screen bg-[#111111] text-white font-mono relative">
+      {/* Glitch Flood Overlay */}
+      {glitchActive && (
+        <div className="fixed inset-0 pointer-events-none z-50">
+          {glitchTexts.map((text) => (
+            <div
+              key={text.id}
+              className="absolute text-white font-mono glitch-flood-text"
+              style={{
+                left: `${text.x}px`,
+                top: `${text.y}px`,
+                fontSize: `${text.size}px`,
+                transform: `rotate(${text.rotation}deg)`,
+                opacity: text.opacity,
+              }}
+            >
+              you left me
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* SECTION 1 - HERO */}
       <section className="min-h-screen flex flex-col items-center justify-center px-8 relative overflow-hidden">
         <div className="fade-section" style={{
@@ -22,9 +84,12 @@ function App() {
               THE RUN NEVER ENDED.
             </h1>
             
-            {/* Animated T-Rex */}
+            {/* Animated T-Rex - Now Clickable */}
             <div className="flex justify-center mb-16">
-              <div className="animated-trex-container">
+              <div 
+                className="animated-trex-container cursor-pointer"
+                onClick={triggerGlitchFlood}
+              >
                 <div className="animated-trex">
                   <div className="trex-row">
                     <div className="pixel glitch-pixel"></div>
@@ -429,11 +494,20 @@ function App() {
       {/* SECTION 3 - INTERACTIVE GATE */}
       <section className="min-h-screen flex items-center justify-center px-8">
         <div className="fade-section" style={{
-          opacity: scrollY > window.innerHeight * 1.5 && scrollY < window.innerHeight * 2.5 ? 1 : 0,
+          opacity: scrollY > window.innerHeight * 1.5 && scrollY < window.innerHeight * 2.5 && !manifestoRevealed ? 1 : 0,
           transition: 'opacity 0.8s ease-in-out'
         }}>
           <div className="text-center">
-            <span className="text-4xl md:text-6xl font-light">_</span>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleInputSubmit}
+              className="bg-transparent border-none outline-none text-4xl md:text-6xl font-light text-white text-center cursor-blink"
+              style={{ width: '200px' }}
+              placeholder="_"
+              autoFocus
+            />
           </div>
         </div>
       </section>
@@ -441,7 +515,7 @@ function App() {
       {/* SECTION 4 - MANIFESTO */}
       <section className="min-h-screen flex items-center justify-center px-8">
         <div className="fade-section" style={{
-          opacity: scrollY > window.innerHeight * 2.5 && scrollY < window.innerHeight * 3.5 ? 1 : 0,
+          opacity: manifestoRevealed || (scrollY > window.innerHeight * 2.5 && scrollY < window.innerHeight * 3.5) ? 1 : 0,
           transition: 'opacity 0.8s ease-in-out'
         }}>
           <div className="text-center space-y-8 max-w-4xl">

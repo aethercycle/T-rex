@@ -36,6 +36,11 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
+  transition: transform 0.2s ease;
+}
+
+.animated-trex-container:hover {
+  transform: scale(1.05);
 }
 
 .animated-trex {
@@ -199,6 +204,83 @@ body {
   }
 }
 
+/* Interactive Input Styling */
+.cursor-blink::placeholder {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Glitch Flood Effect */
+.glitch-flood-text {
+  font-family: 'Roboto Mono', monospace;
+  animation: glitchFlood 2.5s ease-out forwards;
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes glitchFlood {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1.2) rotate(var(--rotation, 0deg));
+  }
+  20% {
+    opacity: 0.8;
+    transform: scale(0.9) rotate(calc(var(--rotation, 0deg) * -1));
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.1) rotate(var(--rotation, 0deg));
+    filter: brightness(1.5);
+  }
+  40% {
+    opacity: 0.6;
+    transform: scale(0.95) rotate(calc(var(--rotation, 0deg) * 0.5));
+    filter: brightness(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) rotate(var(--rotation, 0deg));
+    filter: brightness(1.2);
+  }
+  60% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(calc(var(--rotation, 0deg) * -0.8));
+    filter: brightness(0.5);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1.15) rotate(var(--rotation, 0deg));
+    filter: brightness(1.3);
+  }
+  80% {
+    opacity: 0.3;
+    transform: scale(0.7) rotate(calc(var(--rotation, 0deg) * 1.2));
+    filter: brightness(0.4);
+  }
+  90% {
+    opacity: 0.1;
+    transform: scale(0.5) rotate(var(--rotation, 0deg));
+    filter: brightness(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(calc(var(--rotation, 0deg) * 2));
+    filter: brightness(0);
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .pixel {
@@ -208,6 +290,10 @@ body {
   
   .animated-ground {
     width: 150px;
+  }
+  
+  .cursor-blink {
+    font-size: 2rem !important;
   }
 }
 
@@ -219,5 +305,9 @@ body {
   
   .animated-ground {
     width: 120px;
+  }
+  
+  .cursor-blink {
+    font-size: 1.5rem !important;
   }
 }
