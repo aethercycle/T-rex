@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Original T-Rex styles */
+.pixelated-trex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.trex-row {
+  display: flex;
+  gap: 1px;
+}
+
+.pixel {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+.pixel.filled {
+  background-color: white;
+  border: 1px solid white;
+}
+
+/* Animated T-Rex Container */
+.animated-trex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.animated-trex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  animation: trexGlitch 2s infinite;
+}
+
+/* T-Rex Glitch Animation */
+@keyframes trexGlitch {
+  0%, 20% {
+    transform: translateX(0);
+    filter: none;
+  }
+  21%, 22% {
+    transform: translateX(-2px);
+    filter: brightness(0.8);
+  }
+  23%, 25% {
+    transform: translateX(1px);
+    filter: brightness(1.2);
+  }
+  26%, 40% {
+    transform: translateX(0);
+    filter: none;
+  }
+  41%, 42% {
+    transform: translateX(3px) translateY(-1px);
+    filter: contrast(1.5);
+  }
+  43%, 45% {
+    transform: translateX(-1px) translateY(1px);
+    filter: brightness(0.6);
+  }
+  46%, 60% {
+    transform: translateX(0);
+    filter: none;
+  }
+  61%, 63% {
+    transform: translateX(-3px);
+    filter: hue-rotate(180deg);
+  }
+  64%, 66% {
+    transform: translateX(2px);
+    filter: brightness(1.4);
+  }
+  67%, 100% {
+    transform: translateX(0);
+    filter: none;
+  }
+}
+
+/* Glitch Pixel Animation */
+.glitch-pixel {
+  animation: pixelGlitch 3s infinite;
+}
+
+@keyframes pixelGlitch {
+  0%, 85% {
+    opacity: 1;
+  }
+  86%, 88% {
+    opacity: 0;
+  }
+  89%, 91% {
+    opacity: 0.3;
+  }
+  92%, 94% {
+    opacity: 0;
+  }
+  95%, 100% {
+    opacity: 1;
+  }
+}
+
+.glitch-pixel:nth-child(3n) {
+  animation-delay: 0.2s;
+}
+
+.glitch-pixel:nth-child(5n) {
+  animation-delay: 0.4s;
+}
+
+.glitch-pixel:nth-child(7n) {
+  animation-delay: 0.6s;
+}
+
+/* Animated Ground Line */
+.animated-ground {
+  width: 200px;
+  height: 2px;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-ground::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    white 0px,
+    white 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  animation: groundFlicker 1.5s infinite;
+}
+
+@keyframes groundFlicker {
+  0%, 60% {
+    opacity: 1;
+  }
+  61%, 65% {
+    opacity: 0.3;
+  }
+  66%, 70% {
+    opacity: 0;
+  }
+  71%, 75% {
+    opacity: 0.7;
+  }
+  76%, 100% {
+    opacity: 1;
+  }
+}
+
+/* Fade Section Transitions */
+.fade-section {
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Lore Text Animation */
+.lore-text {
+  opacity: 0;
+  animation: loreAppear 1s ease-in-out 0.5s forwards;
+}
+
+@keyframes loreAppear {
+  to {
+    opacity: 1;
+  }
+}
+
+.lore-line {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: lineAppear 0.8s ease-out forwards;
+}
+
+@keyframes lineAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pixel {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .animated-ground {
+    width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pixel {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .animated-ground {
+    width: 120px;
+  }
+}
